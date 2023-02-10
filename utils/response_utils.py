@@ -13,7 +13,7 @@ def get_response_structure(status, code, data=None, message=None):
     return response
 
 
-def compose_response(obj, message=None):
+def compose_response(obj, code=200,message=None):
     if isinstance(obj, ICCError):
         return get_response_structure(status=False, code=obj.error_code, message=obj.error_message)
-    return get_response_structure(status=True, code=200, data=obj, message=message)
+    return get_response_structure(status=True, code=code, data=obj, message=message)
