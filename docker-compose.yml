@@ -1,0 +1,40 @@
+version: "3.3"
+services:
+  # icc-platform-db:
+  #   image: mongo
+  #   ports:
+  #     - 27017:27017
+  #   container_name: icc-platform-db
+  #   restart: unless-stopped
+  #   command: mongod --auth
+  #   volumes:
+  #     - mongodb:/data/db
+  #   environment:
+  #     MONGO_INITDB_ROOT_USERNAME: root
+  #     MONGO_INITDB_ROOT_PASSWORD: rootPassword
+  #     MONGO_INITDB_DATABASE: icc
+
+  
+  icc-platform:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: icc-platform
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+      - "9229:9229"
+    environment:
+      - NODE_ENV=development
+    # depends_on:
+    #   - icc-platform-db
+    networks:
+      - backend
+    env_file:
+      - .env
+      
+# volumes:
+#   mongodb:
+
+networks:
+  backend:

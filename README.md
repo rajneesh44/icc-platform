@@ -3,7 +3,7 @@ There are two ways to run this application.
 * Without Docker
 * Using Docker
 
-Steps to run the application without using Docker.
+### Steps to run the application without using Docker.
 
 1. Make sure Python version > `3.9`
 2. Make sure that latest version of pip is installed.
@@ -22,3 +22,14 @@ Steps to run the application without using Docker.
     ```
     $ python3 app.py
     ```
+
+
+### Steps to run the application with Docker
+
+1. Make sure that docker is installed and configured.
+2. Open the Project root directory and run the below command
+    ```
+    $ docker-compose up --build
+    ```
+
+This project by default uses port [8080](http://localhost:8080)
