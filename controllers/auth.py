@@ -36,5 +36,5 @@ class AuthController:
         
         except Exception as e:
             logging.info(e.__dict__)
-            return CustomICCError.UNAUTHORIZED
+            return CustomICCError.GOOGLE_AUTHENTICATION_FAILED
         
