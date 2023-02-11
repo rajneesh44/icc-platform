@@ -15,26 +15,28 @@ CLIENT_ID = os.getenv("CLIENT_ID")
 
 class AuthController:
     def google_auth_callback(self, token: str):
-        try:
-            info = id_token.verify_oauth2_token(token, requests.Request(), CLIENT_ID)
-            
-            email = info["email"]
-            name = info['given_name']   + " "   + info.get('family_name',"")
-            profile_img_url = info.get("picture", "")
-
-            user_obj = {
-                "email": email,
-                "name": name,
-                "profile_img_url": profile_img_url
-            }
-            user = uc.find_user({"email": email})
-            if not user:
-                user = uc.create_user(user_obj)
-                
-            login_user(user)
-            return user
+        # try:
+        info = id_token.verify_oauth2_token(token, requests.Request(), CLIENT_ID)
         
-        except Exception as e:
-            logging.info(e.__dict__)
-            return CustomICCError.GOOGLE_AUTHENTICATION_FAILED
+        email = info["email"]
+        name = info['given_name']   + " "   + info.get('family_name',"")
+        profile_img_url = info.get("picture", "")
+
+        user_obj = {
+            "email": email,
+            "name": name,
+            "profile_img_url": profile_img_url
+        }
+        user = uc.find_user({"email": email})
+        print("=============", user)
+        if not user or isinstance(user, CustomICCError):
+            user = uc.create_user(user_obj)
+            print('======>', user)
+        if user:
+            login_user(user)
+        return user
+    
+        # except Exception as e:
+        #     logging.info(e.__dict__)
+        #     return CustomICCError.GOOGLE_AUTHENTICATION_FAILED
         

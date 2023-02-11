@@ -12,7 +12,7 @@ uc = UserController()
 @user_blueprint.route("/", methods=["GET"])
 @login_required
 def get_user():
-    uid = session.get(uid)
+    uid = session.get("uid")
     user = uc.get_user(uid)
     return compose_response(user)
 

@@ -2,7 +2,7 @@ from time import time
 from typing import Any
 from bson import ObjectId
 from core.db_manager import DBManager
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, parse_obj_as
 
 
 class Entity(BaseModel):
@@ -37,7 +37,7 @@ class Entity(BaseModel):
             obj = db.find_one(params)
         else:
             obj = db.find_one(params, keys)
-        return cls.parse_obj(obj)
+        return parse_obj_as(cls, obj) if obj is not None else None
     
     @classmethod 
     def find_many(cls, params, keys=[], deleted=False, limit=0, sort=None):
@@ -51,7 +51,7 @@ class Entity(BaseModel):
 
         cur = db.find(filter=params, projection=keys, limit=limit, sort=sort)
 
-        return [cls.parse_obj(obj) for obj in cur]
+        return [parse_obj_as(cls, obj) for obj in cur]
 
     def update(self, keys=[]):
         db = self._db()
