@@ -17,5 +17,6 @@ class User(Entity):
     coins_earned: int = 0
     profile_img_url: str = ""
     referral_code: str = Field(default_factory=generate_referral_code)
+    fcm: str = None
 
 

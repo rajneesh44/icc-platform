@@ -10,3 +10,5 @@ class ICCError(Enum):
 
 class CustomICCError(ICCError):
     UNAUTHORIZED = (401, "Unauthorized")
+    USER_NOT_FOUND = (404, "User not found")
+    USERS_NOT_FOUND = (404, "Users not found")

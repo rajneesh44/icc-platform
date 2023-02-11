@@ -1,13 +1,20 @@
 from time import time
+from typing import Any
 from bson import ObjectId
 from core.db_manager import DBManager
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
+
 
 class Entity(BaseModel):
     created_at: float = time()
     updated_at: float = time()
     deleted: bool = False
     _id: ObjectId = ObjectId()
+    id: str = None
+
+    def __init__(__pydantic_self__, **data: Any) -> None:
+        super().__init__(**data)
+        __pydantic_self__.id = str(__pydantic_self__._id)
 
 
     @classmethod

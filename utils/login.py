@@ -7,7 +7,7 @@ from utils.error import CustomICCError
 
 
 def login_user(data: dict):
-    session["uid"] = data.get("uid")
+    session["uid"] = data.get("uid", data.get("id"))
     session["t"] = time.time()
     session["logout"] = False
     session["user_type"] = data.get("user_type")
