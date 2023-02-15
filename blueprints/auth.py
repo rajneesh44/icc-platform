@@ -11,12 +11,34 @@ ac = AuthController()
 
 @auth_blueprint.route("/google/callback", methods=["POST"])
 def google_auth():
-    data = request.json
+    data: dict = request.json
     idToken = data.get("idToken")
     if not idToken:
         return compose_response(CustomICCError.INVALID_PARAMS_OR_REQUIRED_PARAMS_MISSING)
     response = ac.google_auth_callback(idToken)
     return compose_response(response)
+
+
+@auth_blueprint.route("/send/otp", methods=["POST"])
+def send_otp():
+    data: dict = request.json
+    phone = data.get("phone")
+    if not phone:
+        return compose_response(CustomICCError.INVALID_PARAMS_OR_REQUIRED_PARAMS_MISSING)
+    response = ac.send_otp(phone)
+    return compose_response(response)
+
+@auth_blueprint.route("/verify/otp", methods=["POST"])
+def verify_otp():
+    data: dict = request.json
+    phone = data.get("phone")
+    otp = int(data.get("otp", 0))
+    if not (phone and otp):
+        return compose_response(CustomICCError.INVALID_PARAMS_OR_REQUIRED_PARAMS_MISSING)
+    response = ac.verify_otp(phone, otp)
+    return compose_response(response)
+
+
 
 @auth_blueprint.route("/logout", methods=["POST"])
 def logout():
