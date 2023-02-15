@@ -12,5 +12,6 @@ class Product(Entity):
     price: int = 0
     discount: int = 0
     ratings: int = 0
+    published: bool = False
     sizes: list[str] = Field(default=["S", "M", "L", "XXL"])
 
