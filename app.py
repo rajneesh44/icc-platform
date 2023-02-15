@@ -1,5 +1,6 @@
 import os
 from flask import Flask
+from flask_cors import CORS
 from dotenv import load_dotenv
 from icc_session_interface import ICCSessionInterface
 from blueprints import *
@@ -9,6 +10,8 @@ from core.db_manager import DBManager
 load_dotenv()
 
 app = Flask(__name__)
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 app.secret_key = os.getenv('APP_SECRET')
 app.session_interface = ICCSessionInterface()
@@ -20,7 +23,7 @@ def test():
 
 def register_blueprints():
     blueprints = [
-        auth_blueprint, user_blueprint, match_blueprint
+        auth_blueprint, user_blueprint, match_blueprint, product_blueprint
     ]
 
     for blueprint in blueprints:
