@@ -10,6 +10,7 @@ from controllers.sms_provider_controller import Fast2SMSController
 from random import randint
 from models.otp_info import OtpInfo
 from time import time
+import random
 
 
 load_dotenv()
@@ -44,7 +45,7 @@ class AuthController:
         
 
     def send_otp(self, phone: str):
-        otp = int(''.join(["{}".format(randint(0, 9)) for num in range(0, 6)]))
+        otp = int(random.randint(100000, 999999))
         message = f"Your OTP for Login is {otp}. Otp will be valid for 10 minutes."
         otp_info = OtpInfo.find_one({"phone": phone, "status": 0})
         if otp_info:
