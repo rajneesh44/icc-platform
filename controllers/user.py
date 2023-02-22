@@ -3,9 +3,9 @@ from utils.error import CustomICCError
 
 class UserController:
     def create_user(self,user_obj: dict):
-        user = User.parse_obj(user_obj)
+        user = User.from_dict(user_obj)
         user.update()
-        return user.dict()
+        return user.__dict__
 
     def update_user():
         pass
@@ -14,20 +14,20 @@ class UserController:
         user = User.find_one(user_id)
         if not user:
             return CustomICCError.USER_NOT_FOUND
-        return user.dict()
+        return user.__dict__
     
 
     def find_user(self, params: dict):
         user = User.find_one(params)
         if not user:
             return CustomICCError.USER_NOT_FOUND
-        return user.dict()
+        return user.__dict__
     
     def find_users(self, params: dict):
         users = User.find_many(params)
         if not len(users):
             return CustomICCError.USERS_NOT_FOUND
-        return [user.dict() for user in users]
+        return [user.__dict__ for user in users]
     
         
         
