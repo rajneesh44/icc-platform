@@ -11,6 +11,7 @@ from random import randint
 from models.otp_info import OtpInfo
 from time import time
 
+
 load_dotenv()
 uc = UserController()
 
@@ -51,30 +52,32 @@ class AuthController:
                 return CustomICCError.SENDING_OTP_FAILED_PLEASE_TRY_AGAIN_LATER
             else:
                 otp_info.otp= otp
+                otp_info.expiration_time = int(time()) + 60*10
                 otp_info.update()
-        if not otp_info:
+        else:
             otp_dict = {
                 "phone": phone,
                 "otp": otp,
             }
-            otp_info = OtpInfo.parse_obj(otp_dict)
+            otp_info = OtpInfo.from_dict(otp_dict)
             otp_info.update()
-
-        Fast2SMSController.send_otp(phone, message)
+        try:
+            Fast2SMSController.send_otp(phone, message)
+        except:
+            return CustomICCError.SENDING_OTP_FAILED_PLEASE_TRY_AGAIN_LATER
         return True
 
     def verify_otp(self, phone: str, otp: int):
-        otp_info = OtpInfo.find_one({"phone": phone, "otp": otp, "status": 0})
+        otp_info = OtpInfo.find_one({"phone": phone, "status": 0})
         if not otp_info:
             return CustomICCError.OTP_NOT_FOUND_PLEASE_SEND_OTP_FIRST
-        print(otp_info.expiration_time, time(), otp, otp_info.__dict__)
         if int(otp_info.otp) == otp and otp_info.expiration_time > int(time()):
             otp_info.status = 2
             otp_info.update()
 
             user = uc.find_user({"phone": phone})
             if not user or isinstance(user, CustomICCError):
-                user_obj = {"name": phone, "phone": phone}
+                user_obj = {"phone_number": phone}
                 user = uc.create_user(user_obj)
             if user:
                 login_user(user)
@@ -82,5 +85,9 @@ class AuthController:
         else:
             return CustomICCError.OTP_VERIFICATION_FAIELD
         
-
-            
+    # def login_admin_with_password(self, username: str, password: str):
+    #     user = uc.find_user({"username": username, "password": hash(password)})
+    #     if not user or isinstance(user, CustomICCError):
+    #         return CustomICCError.ADMIN_NOT_FOUND
+    #     login_user(user)
+    #     return user

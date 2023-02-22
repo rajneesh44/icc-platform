@@ -19,5 +19,7 @@ class CustomICCError(ICCError):
     #otp
     SENDING_OTP_FAILED_PLEASE_TRY_AGAIN_LATER = (400, "Unable to send otp, Please try again later.")
     OTP_NOT_FOUND_PLEASE_SEND_OTP_FIRST = (400, "Otp verification failed, please send otp before verifying")
-    OTP_VERIFICATION_FAIELD = (400, "otp verification failed")
+    OTP_VERIFICATION_FAIELD = (400, "Incorrect Otp Entered. Please try Again!")
     
+    #admin login
+    ADMIN_NOT_FOUND = (404, "Admin not found")

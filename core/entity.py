@@ -1,22 +1,47 @@
 from time import time
 from typing import Any
-from bson import ObjectId
 from core.db_manager import DBManager
-from pydantic import BaseModel, parse_obj_as
+from bson import ObjectId
+from dataclasses import dataclass, is_dataclass, field
 
 
-class Entity(BaseModel):
-    created_at: float = time()
-    updated_at: float = time()
+def from_dict_utils(cls, ndict):
+    d2 = {}
+    for key in cls.__dataclass_fields__.keys():
+        if key not in ndict:
+            continue
+        value = cls.__dataclass_fields__[key].type
+        if ndict.get(key) is not None and value in [str,float,int]:
+            d2[key] = value(ndict.get(key))
+        elif value == bool:
+            if ndict.get(key) in ["true", "True", True]:
+                d2[key] = True
+            elif ndict.get(key) in ["false", "False", False]:
+                d2[key] = False
+        elif ndict.get(key) is not None and is_dataclass(value):
+            d2[key] = from_dict_utils(value, ndict.get(key))
+        else:
+            d2[key] = ndict.get(key)
+    if "_id" in ndict and "_id" not in d2:
+        d2["_id"] = ndict.get("_id")
+
+    return d2
+
+@dataclass
+class Entity():
+    created_at: float = field(default_factory=time)
+    updated_at: float = field(default_factory=time)
     deleted: bool = False
-    _id: ObjectId = ObjectId()
-    id: str = None
-
-    def __init__(__pydantic_self__, **data: Any) -> None:
-        super().__init__(**data)
-        __pydantic_self__.id = str(__pydantic_self__._id)
+    _id: ObjectId = field(default_factory=ObjectId)
 
 
+    @classmethod
+    def from_dict(cls, ndict):
+        if ndict is None:
+            return None
+        d2 = from_dict_utils(cls, ndict)
+        return cls(**d2)
+    
     @classmethod
     def _db(cls):
         db_manager = DBManager.get_instance()
@@ -37,7 +62,7 @@ class Entity(BaseModel):
             obj = db.find_one(params)
         else:
             obj = db.find_one(params, keys)
-        return parse_obj_as(cls, obj) if obj is not None else None
+        return cls.from_dict(obj)
     
     @classmethod 
     def find_many(cls, params, keys=[], deleted=False, limit=0, sort=None):
@@ -51,7 +76,7 @@ class Entity(BaseModel):
 
         cur = db.find(filter=params, projection=keys, limit=limit, sort=sort)
 
-        return [parse_obj_as(cls, obj) for obj in cur]
+        return [cls.from_dict(obj) for obj in cur]
 
     def update(self, keys=[]):
         db = self._db()
@@ -74,6 +99,3 @@ class Entity(BaseModel):
     @classmethod
     def count_documents(cls, params, ):
         return cls._db().count_documents(params)
-    
-
-# add update_many, insert_many, delete_many as well.
