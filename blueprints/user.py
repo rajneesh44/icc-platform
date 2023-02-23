@@ -17,6 +17,7 @@ def get_user():
 
 
 @user_blueprint.route("/update", methods=["POST"])
+@login_required
 def update_user():
     uid = session.get("uid")
     data = request.json

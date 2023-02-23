@@ -2,7 +2,7 @@ from time import time
 from typing import Any
 from core.db_manager import DBManager
 from bson import ObjectId
-from dataclasses import dataclass, is_dataclass, field
+from dataclasses import dataclass, is_dataclass, field, asdict
 
 
 def from_dict_utils(cls, ndict):
@@ -81,7 +81,7 @@ class Entity():
     def update(self, keys=[]):
         db = self._db()
         self.updated_at = time()
-        ndict = self.__dict__
+        ndict = asdict(self)
         if (len(keys) == 0):
             db.update_one({"_id": self._id}, {"$set": ndict},  upsert=True)
         else:
@@ -122,3 +122,6 @@ class Entity():
     @classmethod
     def count_documents(cls, params, ):
         return cls._db().count_documents(params)
+
+    def get_dict(self):
+        return asdict(self)
