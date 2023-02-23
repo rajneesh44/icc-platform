@@ -23,3 +23,6 @@ class CustomICCError(ICCError):
     
     #admin login
     ADMIN_NOT_FOUND = (404, "Admin not found")
+
+    #CART
+    CART_ALREADY_EMPTY = (200, "Cart is already Empty")
