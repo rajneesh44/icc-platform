@@ -122,3 +122,6 @@ class Entity():
     @classmethod
     def count_documents(cls, params, ):
         return cls._db().count_documents(params)
+
+    def get_dict(self):
+        return asdict(self)

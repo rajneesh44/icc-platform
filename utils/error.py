@@ -29,3 +29,6 @@ class CustomICCError(ICCError):
     CART_NOT_FOUND = (404, "No Items in cart or Cart is Empty")
     CAN_NOT_REMOVE_FROM_CART = (400, "Can not remove item/items from cart. Please try again later")
     CART_ALREADY_EMPTY = (200, "Cart is already Empty")
+
+    #Address
+    ADDRESS_NOT_FOUND = (404, "Address Not found")
