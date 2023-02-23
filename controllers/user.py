@@ -7,8 +7,12 @@ class UserController:
         user.update()
         return user.__dict__
 
-    def update_user():
-        pass
+    def update_user(self, user_obj: dict):
+        user = User.find_one(user_obj.get("user_id"))
+        if not user:
+            return CustomICCError.USER_NOT_FOUND
+        user.update_document_from_dict(user_obj)
+        return user.__dict__
 
     def get_user(self, user_id):
         user = User.find_one(user_id)

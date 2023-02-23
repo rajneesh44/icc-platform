@@ -2,10 +2,13 @@ from models.product import Product
 from utils.error import CustomICCError
 
 class ProductController:
-    def add_product(self, data: dict):
-        product = Product.from_dict(data)
-        product.update()
-        return product.__dict__
+    def add_product(self, data: list):
+        products = []
+        for product in data:
+            product = Product.from_dict(data)
+            product.update()
+            products.append(product)
+        return [product.__dict__ for product in products]
     
     def list_products(self):
         products = Product.find_many({})
@@ -16,6 +19,5 @@ class ProductController:
         if not product:
             return CustomICCError.PRODUCT_NOT_FOUND
         return product.__dict__
-    
-        
+
 

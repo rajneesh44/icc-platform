@@ -1,4 +1,4 @@
-from flask  import Blueprint, session
+from flask  import Blueprint, session, request
 from controllers.user import UserController
 from utils.login import login_required
 from utils.response_utils import compose_response
@@ -6,7 +6,6 @@ from utils.response_utils import compose_response
 
 user_blueprint = Blueprint("user", __name__, url_prefix="/user")
 uc = UserController()
-
 
 
 @user_blueprint.route("/", methods=["GET"])
@@ -19,10 +18,8 @@ def get_user():
 
 @user_blueprint.route("/update", methods=["POST"])
 def update_user():
-    pass
-
-
-
-
-
-
+    uid = session.get("uid")
+    data = request.json
+    data["user_id"] = uid
+    user = uc.update_user(data)
+    return compose_response(user)
