@@ -32,8 +32,24 @@ class CartController:
         cart.update()
         return asdict(cart)
 
-    def remove_from_cart(self, user_id: str, product_id: str):
-        pass
+    def remove_from_cart(self, user_id: str, product_id: str, size):
+        cart = Cart.find_one({"user_id": user_id})
+        if not cart:
+            return CustomICCError.CART_NOT_FOUND
+        index_to_pop = -1
+        for idx, product in enumerate(cart.products):
+            if product["parent"] == product_id and product["sizes"] == [size]:
+                index_to_pop = idx
+                break
+        try:
+            if index_to_pop == -1:
+                return CustomICCError.CAN_NOT_REMOVE_FROM_CART
+            cart.products.pop(index_to_pop)
+            cart.update()
+            return asdict(cart)
+        except IndexError as e:
+            return CustomICCError.UNKNOWN_ERROR
+
 
     def get_cart_info(self, user_id: str):
         cart = Cart.find_one({"user_id": user_id})

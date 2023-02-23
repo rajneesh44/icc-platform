@@ -9,6 +9,7 @@ class ICCError(Enum):
 
 
 class CustomICCError(ICCError):
+    UNKNOWN_ERROR = (100, "Something went wrong")
     UNAUTHORIZED = (401, "Unauthorized")
     USER_NOT_FOUND = (404, "User not found")
     USERS_NOT_FOUND = (404, "Users not found")
@@ -25,4 +26,6 @@ class CustomICCError(ICCError):
     ADMIN_NOT_FOUND = (404, "Admin not found")
 
     #CART
+    CART_NOT_FOUND = (404, "No Items in cart or Cart is Empty")
+    CAN_NOT_REMOVE_FROM_CART = (400, "Can not remove item/items from cart. Please try again later")
     CART_ALREADY_EMPTY = (200, "Cart is already Empty")
