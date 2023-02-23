@@ -96,6 +96,29 @@ class Entity():
         else:
             db.update_one({"_id": self._id},{"$set":{"deleted":True}}, upsert = False)
     
+
+    def update_from_dict(self, params):
+        d2 = {x:params.get(x) for x  in self.__dataclass_fields__.keys() if x in params}
+        for x,y in d2.items():
+            if x in self.__dict__:
+                value = self.__dataclass_fields__[x].type
+
+                if  y is not None and value in [str,float,int]:
+                    self.__dict__[x] = value(y)
+                elif value == bool:
+                    if y in ["true", "True", True]:
+                        self.__dict__[x] = True
+                    elif y in ["false", "False", False]:
+                        self.__dict__[x] = False
+                elif is_dataclass(y):
+                    self.__dict__[x] = from_dict_utils(y, params.get(x))
+                else:
+                    self.__dict__[x] = y
+
+    def update_document_from_dict(self, params):
+        self.update_from_dict(params)
+        self.update()
+    
     @classmethod
     def count_documents(cls, params, ):
         return cls._db().count_documents(params)

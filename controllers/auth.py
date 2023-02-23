@@ -76,7 +76,7 @@ class AuthController:
             otp_info.status = 2
             otp_info.update()
 
-            user = uc.find_user({"phone": phone})
+            user = uc.find_user({"phone_number": phone})
             if not user or isinstance(user, CustomICCError):
                 user_obj = {"phone_number": phone}
                 user = uc.create_user(user_obj)
