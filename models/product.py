@@ -16,7 +16,7 @@ class Product(Entity):
     quantity: int = 0
     price: int = 0
     discount: int = 0
-    ratings: int = 0
+    ratings: float = 0
     published: bool = False
     sizes: list[str] = field(default_factory=get_sizes)
     is_sku: bool = field(default=True)
