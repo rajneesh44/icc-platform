@@ -15,7 +15,7 @@ class User(Entity):
     phone_number: str = None
     user_name: str = None
     user_type: int = UserType.ICC_FAN
-    coins_earned: int = 0
+    coins_earned: int = field(default=100)
     profile_img_url: str = ""
     referral_code: str = field(default_factory=generate_referral_code)
     fcm: str = None
