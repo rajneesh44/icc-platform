@@ -28,7 +28,7 @@ def test2():
 def register_blueprints():
     blueprints = [
         auth_blueprint, user_blueprint, match_blueprint, product_blueprint,
-        cart_blueprint, address_blueprint
+        cart_blueprint, address_blueprint, utils_blueprint
     ]
 
     for blueprint in blueprints:
