@@ -29,6 +29,13 @@ class CartController:
     
             if not product_found_in_cart:
                 cart.products.append(product_to_add)
+        
+        price = 0
+        for cart_product in cart.products:
+            if not isinstance(cart_product, dict):
+                cart_product = cart_product.__dict__
+            price += (cart_product["quantity"] * cart_product["price"])
+        cart.price = price
         cart.update()
         return asdict(cart)
 
@@ -44,8 +51,12 @@ class CartController:
         try:
             if index_to_pop == -1:
                 return CustomICCError.CAN_NOT_REMOVE_FROM_CART
+            cart.price -= (cart.products[index_to_pop].price * cart.products[index_to_pop].quantity)
             cart.products.pop(index_to_pop)
             cart.update()
+
+            if len(cart.products) == 0:
+                cart.delete()
             return asdict(cart)
         except IndexError as e:
             return CustomICCError.UNKNOWN_ERROR
@@ -56,3 +67,9 @@ class CartController:
         if not cart: 
             return None
         return asdict(cart)
+    
+    def _get_cart_by_id(self, cart_id):
+        cart = Cart.find_one(cart_id)
+        if not cart: 
+            return None
+        return cart

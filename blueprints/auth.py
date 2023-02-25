@@ -53,6 +53,7 @@ def verify_otp():
 
 
 @auth_blueprint.route("/logout", methods=["POST"])
+@login_required
 def logout():
     session.clear()
     return compose_response(True)
