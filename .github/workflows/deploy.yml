@@ -3,7 +3,7 @@ on:
   push:
     branches: [ main ]
 jobs:
-  build:
+  build and deploy:
     name: Build Image
     runs-on: ubuntu-latest
     steps:
@@ -24,8 +24,15 @@ jobs:
     - name: Build, tag, and push image to Amazon ECR
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        ECR_REPOSITORY: icc-hack-repo
-        IMAGE_TAG: icc-hack-repo
+        ECR_REPOSITORY: icc-hack-repository
+        IMAGE_TAG: icc-hack-repository
       run: |
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+    
+    - name: Deploy Code
+      id: deploy
+      run: |
+        aws elasticbeanstalk create-application-version --application-name "icc-platform" --version-label 'latest' --source-bundle S3Bucket=${{ secrets.S3_BUCKET }}, S3Key=Dockerrun.aws.json
+        aws elasticbeanstalk update-environment --application-name "icc-platform" --environment-name "icc-hackathon" --version-label='latest'
+
