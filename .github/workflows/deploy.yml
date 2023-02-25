@@ -26,7 +26,7 @@ jobs:
       id: deploy
       run: |
           aws deploy create-deployment \
-            --application-name icc-hack \
-            --deployment-group-name icc-hack-group \
+            --application-name icc-hackathon \
+            --deployment-group-name icc-hackathon-group \
             --deployment-config-name CodeDeployDefault.OneAtATime \
             --github-location repository=${{ github.repository }},commitId=${{ github.sha }}
