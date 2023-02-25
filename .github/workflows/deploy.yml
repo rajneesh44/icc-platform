@@ -30,9 +30,19 @@ jobs:
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
     
-    - name: Deploy Code
-      id: deploy
+    - name: Create EBS Application
+      id: deploy1
       run: |
-        aws elasticbeanstalk create-application-version --application-name "icc-platform" --version-label 'latest' --source-bundle S3Bucket=${{ secrets.S3_BUCKET }}, S3Key=Dockerrun.aws.json
-        aws elasticbeanstalk update-environment --application-name "icc-platform" --environment-name "icc-hackathon" --version-label='latest'
+        aws elasticbeanstalk create-application-version \
+        --application-name "icc-platform" \
+        --version-label 'latest' \
+        --source-bundle S3Bucket=${{ secrets.S3_BUCKET }}, S3Key=Dockerrun.aws.json
+    
+    - name: Deploy
+      id: deploy2
+      run: |
+        aws elasticbeanstalk update-environment \
+        --application-name "icc-platform" \
+        --environment-name "icc-hackathon" \
+        --version-label='latest'
 
