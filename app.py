@@ -20,6 +20,10 @@ app.session_interface = ICCSessionInterface()
 def test():
     return "Server is up and running"
 
+@app.route('/test2', methods=["GET"])
+def test2():
+    return "Server is up and running! Again"
+
 
 def register_blueprints():
     blueprints = [
