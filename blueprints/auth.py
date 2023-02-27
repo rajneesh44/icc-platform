@@ -39,15 +39,15 @@ def verify_otp():
     return compose_response(response)
 
 
-# @auth_blueprint.route("/admin/login", methods=["POST"])
-# def admin_login():
-#     data: dict = request.json
-#     username = data.get("username")
-#     password = data.get("password")
-#     if not (username and password):
-#         return compose_response(CustomICCError.INVALID_PARAMS_OR_REQUIRED_PARAMS_MISSING)
-#     response = ac.login_admin_with_password(username, password)
-#     return compose_response(response)
+@auth_blueprint.route("/admin/login", methods=["POST"])
+def admin_login():
+    data = request.json
+    username = data.get("username")
+    password = data.get("password")
+    if not (username and password):
+        return compose_response(CustomICCError.INVALID_PARAMS_OR_REQUIRED_PARAMS_MISSING)
+    response = ac.login_admin_with_password(username, password)
+    return compose_response(response)
 
 
 

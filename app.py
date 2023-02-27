@@ -10,7 +10,7 @@ from core.db_manager import DBManager
 load_dotenv()
 
 app = Flask(__name__)
-cors = CORS(app)
+cors = CORS(app, supports_credentials=True)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
 app.secret_key = os.getenv('APP_SECRET')

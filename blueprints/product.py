@@ -1,12 +1,18 @@
 from flask import Blueprint, request
 from utils.response_utils import compose_response
 from controllers.product import ProductController
+from utils.login import login_required, admin_required
 
 product_blueprint = Blueprint("product", __name__, url_prefix="/products")
 pc = ProductController()
 
 @product_blueprint.route("/", methods=["GET"])
 def list_products():
+    return compose_response(pc.list_products())
+
+@product_blueprint.route("/admin", methods=["GET"])
+@admin_required
+def admin_list_products():
     return compose_response(pc.list_products())
 
 @product_blueprint.route("/<uuid>", methods=["GET"])

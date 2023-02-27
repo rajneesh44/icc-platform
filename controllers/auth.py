@@ -11,13 +11,14 @@ from random import randint
 from models.otp_info import OtpInfo
 from time import time
 import random
+import bcrypt
 
 
 load_dotenv()
 uc = UserController()
 
 CLIENT_ID = os.getenv("CLIENT_ID")
-
+PASSWORD_SALT = os.getenv("PASSWORD_SALT")
 
 class AuthController:
     def google_auth_callback(self, token: str):
@@ -86,9 +87,13 @@ class AuthController:
         else:
             return CustomICCError.OTP_VERIFICATION_FAIELD
         
-    # def login_admin_with_password(self, username: str, password: str):
-    #     user = uc.find_user({"username": username, "password": hash(password)})
-    #     if not user or isinstance(user, CustomICCError):
-    #         return CustomICCError.ADMIN_NOT_FOUND
-    #     login_user(user)
-    #     return user
+    def login_admin_with_password(self, username: str, password: str):
+        encoded_password = password.encode("utf-8")
+        encoded_salt = PASSWORD_SALT.encode("utf-8")
+        encrypted_password = bcrypt.hashpw(encoded_password, encoded_salt)
+        user = uc.find_user({"email": username, "password": encrypted_password.decode("utf-8")})
+        if not user or isinstance(user, CustomICCError):
+            return CustomICCError.ADMIN_NOT_FOUND
+        user["password"] = None
+        login_user(user)
+        return user

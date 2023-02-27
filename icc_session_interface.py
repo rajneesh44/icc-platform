@@ -61,7 +61,7 @@ class ICCSessionInterface(SecureCookieSessionInterface):
         val = self.get_serializer(app).dumps(dict(session))
         response.set_cookie(app.session_cookie_name, val,
                             expires=expires, httponly=True,
-                            domain=domain)
+                            domain=domain, samesite='None', secure=True)
 
   
 
