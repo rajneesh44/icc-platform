@@ -60,8 +60,8 @@ class ICCSessionInterface(SecureCookieSessionInterface):
         expires = self.get_expiration_time(app, session)
         val = self.get_serializer(app).dumps(dict(session))
         response.set_cookie(app.session_cookie_name, val,
-                            expires=expires, httponly=True,
-                            domain=domain, samesite='None', secure=True)
+                            expires=expires, httponly=False,
+                            domain=domain, samesite="None", secure=True)
 
   
 
