@@ -19,10 +19,6 @@ class InstaMojoController:
             phone=phone_number,
             # redirect_url="http://www.example.com/handle_redirect.py"
             )
-        
-        print('=====>', response)
-        print(response['payment_request']['longurl'])
-        print(response['payment_request']['id'])
         return response["payment_request"]
     
     @staticmethod
