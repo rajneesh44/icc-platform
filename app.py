@@ -1,5 +1,5 @@
 import os
-from flask import Flask
+from flask import Flask, send_file
 from flask_cors import CORS
 from dotenv import load_dotenv
 from icc_session_interface import ICCSessionInterface
@@ -23,6 +23,10 @@ def test():
 @app.route('/test2', methods=["GET"])
 def test2():
     return "Server is up and running! Again"
+
+@app.route("/.well-known/pki-validation/70ACB4A7476CE024E4B77E5A095916A6.txt")
+def render_file():
+    return send_file("70ACB4A7476CE024E4B77E5A095916A6.txt")
 
 
 def register_blueprints():
