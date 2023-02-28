@@ -6,3 +6,4 @@ from blueprints.cart import cart_blueprint
 from blueprints.address import address_blueprint
 from blueprints.utils import utils_blueprint
 from blueprints.order import order_blueprint
+from blueprints.videos import videos_blueprint

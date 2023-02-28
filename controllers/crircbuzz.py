@@ -1,6 +1,7 @@
 import os
 import requests
 from dotenv import load_dotenv
+import random
 
 load_dotenv()
 
@@ -10,7 +11,9 @@ class CricbuzzController:
 
     @staticmethod
     def get_api_key():
-        return os.getenv("CRICBUZZ_API_KEY_1")
+        api_keys = [os.getenv("CRICBUZZ_API_KEY_1"), os.getenv("CRICBUZZ_API_KEY_2"), os.getenv("CRICBUZZ_API_KEY_3")]
+        selected_key = api_keys[random.randint(1,3)-1]
+        return selected_key
     
     @staticmethod
     def get_headers():
