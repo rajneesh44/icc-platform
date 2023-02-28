@@ -10,7 +10,7 @@ from core.db_manager import DBManager
 load_dotenv()
 
 app = Flask(__name__)
-cors = CORS(app)
+cors = CORS(app, supports_credentials=True)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
 app.secret_key = os.getenv('APP_SECRET')
@@ -28,7 +28,7 @@ def test2():
 def register_blueprints():
     blueprints = [
         auth_blueprint, user_blueprint, match_blueprint, product_blueprint,
-        cart_blueprint, address_blueprint
+        cart_blueprint, address_blueprint, utils_blueprint, order_blueprint
     ]
 
     for blueprint in blueprints:

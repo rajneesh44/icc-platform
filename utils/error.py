@@ -32,3 +32,7 @@ class CustomICCError(ICCError):
 
     #Address
     ADDRESS_NOT_FOUND = (404, "Address Not found")
+
+    #REFERRAL
+    INVALID_REFERRAL_CODE = (400, "Invalid referral code")
+    REFERRAL_CODE_ERROR = (400, "Referral code error")
