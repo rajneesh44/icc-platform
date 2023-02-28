@@ -33,6 +33,12 @@ class OrderController:
         order.meta["payment_link"] = payment_link["longurl"]
         order.update()
         return order.__dict__
+    
+    def list_orders(self, user_id):
+        orders = Order.find_many({"user_id": user_id})
+        if not len(orders):
+            return []
+        return [order.__dict__ for order in orders]
 
 
             

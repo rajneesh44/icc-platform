@@ -32,3 +32,30 @@ class CricbuzzController:
         response = requests.get(f'{CRICBUZZ_BASE_URL}/mcenter/v1/{match_id}', headers=CricbuzzController.get_headers())
         return response.json()
 
+
+    @staticmethod
+    def get_icc_rankings(category: str, format: str):
+        response = requests.get(f'{CRICBUZZ_BASE_URL}/stats/v1/rankings/{category}', {"formatType": format}, headers=CricbuzzController.get_headers())
+        return response.json()
+        
+
+    @staticmethod
+    def get_icc_news():
+        response = requests.get(f'{CRICBUZZ_BASE_URL}/news/v1/index', headers=CricbuzzController.get_headers())
+        return response.json()
+
+
+    @staticmethod
+    def get_player_info(player_id):
+        response = requests.get(f'{CRICBUZZ_BASE_URL}/stats/v1/player/{player_id}', headers=CricbuzzController.get_headers())
+        return response.json()
+
+
+    @staticmethod
+    def search_player(name: str):
+        response = requests.get(f'{CRICBUZZ_BASE_URL}/stats/v1/player/search', {"plrN": name}, headers=CricbuzzController.get_headers())
+        data: dict = response.json()["player"][0]
+        
+        info = CricbuzzController.get_player_info(data["id"])
+        data.update(info)
+        return data

@@ -51,7 +51,7 @@ class CartController:
         try:
             if index_to_pop == -1:
                 return CustomICCError.CAN_NOT_REMOVE_FROM_CART
-            cart.price -= (cart.products[index_to_pop].price * cart.products[index_to_pop].quantity)
+            cart.price -= (cart.products[index_to_pop]["price"] * cart.products[index_to_pop]["quantity"])
             cart.products.pop(index_to_pop)
             cart.update()
 
