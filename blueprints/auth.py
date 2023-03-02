@@ -51,16 +51,17 @@ def admin_login():
 
 
 
-
 @auth_blueprint.route("/logout", methods=["POST"])
 @login_required
 def logout():
-    session.clear()
+    session.pop("uid")
+    session["logout"] = True
     return compose_response(True)
 
 
 @auth_blueprint.route("/admin/logout", methods=["POST"])
 @admin_required
 def admin_logout():
-    session.clear()
+    session.pop("uid")
+    session["logout"] = True
     return compose_response(True)

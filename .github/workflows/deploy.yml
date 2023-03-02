@@ -35,7 +35,7 @@ jobs:
       run: |
         aws elasticbeanstalk create-application-version \
         --application-name "icc-platform" \
-        --version-label '1.1.5' \
+        --version-label '1.1.6' \
         --source-bundle S3Bucket=${{ secrets.S3_BUCKET }},S3Key='Dockerrun.aws.json'
     
     - name: Deploy
