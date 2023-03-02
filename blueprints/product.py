@@ -20,6 +20,7 @@ def get_product(uuid: str):
     return compose_response(pc.get_product(uuid))
 
 @product_blueprint.route("/add", methods=["POST"])
+@admin_required
 def add_product():
     data = request.json.get("data", [])
     return compose_response(pc.add_product(data))

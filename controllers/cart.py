@@ -2,6 +2,7 @@ from controllers.product import ProductController
 from models.cart import Cart
 from utils.error import CustomICCError
 from dataclasses import asdict
+from models.order import Order
 
 pc = ProductController()
 
@@ -66,7 +67,12 @@ class CartController:
         cart = Cart.find_one({"user_id": user_id})
         if not cart: 
             return None
-        return asdict(cart)
+        order = Order.find_one({"cart_id": str(cart._id), "user_id": user_id, "status": 1})
+        if not order:
+            return asdict(cart)
+        
+        cart.delete()
+        return None
     
     def _get_cart_by_id(self, cart_id):
         cart = Cart.find_one(cart_id)

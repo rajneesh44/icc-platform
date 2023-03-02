@@ -31,6 +31,7 @@ class OrderController:
             )
         order.payment_id = payment_link["id"]
         order.meta["payment_link"] = payment_link["longurl"]
+        order.status = 1
         order.update()
         return order.__dict__
     

@@ -3,7 +3,7 @@ from models.user import User
 from controllers.auth import AuthController
 from utils.error import CustomICCError
 from utils.response_utils import compose_response
-from utils.login import login_required
+from utils.login import login_required, admin_required
 
 
 auth_blueprint = Blueprint("auth", __name__, url_prefix="/auth")
@@ -55,5 +55,12 @@ def admin_login():
 @auth_blueprint.route("/logout", methods=["POST"])
 @login_required
 def logout():
+    session.clear()
+    return compose_response(True)
+
+
+@auth_blueprint.route("/admin/logout", methods=["POST"])
+@admin_required
+def admin_logout():
     session.clear()
     return compose_response(True)

@@ -17,7 +17,7 @@ class InstaMojoController:
             email=email,
             send_sms=send_sms,
             phone=phone_number,
-            # redirect_url="http://www.example.com/handle_redirect.py"
+            redirect_url="https://icc-hack.ap-south-1.elasticbeanstalk.com/test"
             )
         return response["payment_request"]
     
